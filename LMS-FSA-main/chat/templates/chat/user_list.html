@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    User List
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 style="font-family: 'Arial', sans-serif; font-size: 2.5rem; color: #4b4b4b;">All Users</h1>
+        </div>
+
+        <ul class="list-group shadow-sm rounded" style="max-width: 700px; margin: auto; background-color: #fafafa;">
+            {% for user in users %}
+                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4" style="border: none; border-bottom: 1px solid #eee;">
+                    <div class="d-flex align-items-center">
+                        <!-- Add a default user icon -->
+                        <div class="user-icon mr-3" style="width: 40px; height: 40px; background-color: #007bff; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">
+                            {{ user.username|slice:":1"|upper }}
+                        </div>
+                        <span style="font-size: 1.2rem; color: #333; font-weight: 600;">{{ user.username }}</span>
+                    </div>
+
+                    <a href="{% url 'chat:chat_view' user.username %}?sender={{ request.user.username }}" class="btn btn-outline-primary btn-sm rounded-pill px-4" style="font-weight: bold;">
+                        Check Messages
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <style>
+        body {
+            background-color: #f5f5f5; /* Light background */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            background-color: transparent;
+        }
+
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-icon {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+{% endblock %}
