@@ -12,4 +12,5 @@ urlpatterns = [
     path('threads/detail/<int:pk>/comments/add/', views.add_comment, name='add_comment'),
     path('threads/detail/<int:pk>/comments/<int:comment_id>/edit/', views.update_comment, name='update_comment'),
     path('threads/detail/<int:pk>/comments/<int:comment_id>/delete/', views.delete_comment, name='delete_comment'),
+    path('moderation_warning/', views.moderation_warning, name='moderation_warning'),
 ]

@@ -85,7 +85,6 @@ def add_comment(request, pk):
     comments = thread.comments.all()  # Fetch all comments for the thread
     return render(request, 'thread/thread_detail.html', {'thread': thread, 'comments': comments, 'form': form})
 
-
 @login_required
 def update_comment(request, pk, comment_id):
     comment = get_object_or_404(ThreadComments, pk=comment_id)
@@ -104,7 +103,6 @@ def update_comment(request, pk, comment_id):
 
     return render(request, 'thread/comment_form.html', {'form': form, 'comment': comment})
 
-
 @login_required
 def delete_comment(request, pk, comment_id):
     thread = get_object_or_404(DiscussionThread, pk=pk)
@@ -119,3 +117,6 @@ def delete_comment(request, pk, comment_id):
         return redirect('thread:thread_detail', pk=thread.pk)
 
     return render(request, 'thread/comment_confirm_delete.html', {'comment': comment})
+
+def moderation_warning(request):
+    return render(request, 'thread/moderation_warning.html')

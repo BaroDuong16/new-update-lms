@@ -5,64 +5,109 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <div class="text-center mb-4">
-            <h1 style="font-family: 'Arial', sans-serif; font-size: 2.5rem; color: #4b4b4b;">All Users</h1>
-        </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Message</h2>
+    <div class="search-bar mb-4">
+        <form method="GET" action="{% url 'chat:user_list' %}" class="d-flex justify-content-center">
+            <input type="text" name="q" class="form-control w-50" placeholder="Search users..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary ml-2">Search</button>
+        </form>
+    </div>
 
-        <ul class="list-group shadow-sm rounded" style="max-width: 700px; margin: auto; background-color: #fafafa;">
+    <div class="user-list">
+        <ul class="list-group">
             {% for user in users %}
-                <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4" style="border: none; border-bottom: 1px solid #eee;">
-                    <div class="d-flex align-items-center">
-                        <!-- Add a default user icon -->
-                        <div class="user-icon mr-3" style="width: 40px; height: 40px; background-color: #007bff; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">
-                            {{ user.username|slice:":1"|upper }}
+                <li class="list-group-item d-flex align-items-center justify-content-between py-3">
+                    <div class="user-info d-flex align-items-center">
+                        <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-3">
+                            {{ user.username|slice:":1" }} <!-- Initial of the username -->
                         </div>
-                        <span style="font-size: 1.2rem; color: #333; font-weight: 600;">{{ user.username }}</span>
+                        <div>
+                            <a href="{% url 'chat:chat_view' username=user.username %}" class="text-dark font-weight-bold">
+                                {{ user.username }} 
+                            </a>
+                            <div class="text-muted">{{ user.email }}</div>
+                        </div>
                     </div>
-
-                    <a href="{% url 'chat:chat_view' user.username %}?sender={{ request.user.username }}" class="btn btn-outline-primary btn-sm rounded-pill px-4" style="font-weight: bold;">
-                        Check Messages
+                    <a href="{% url 'chat:chat_view' username=user.username %}" class="btn btn-sm btn-outline-primary">
+                        Message
                     </a>
                 </li>
+            {% empty %}
+                <li class="list-group-item text-center text-muted">No users found matching your search.</li>
             {% endfor %}
         </ul>
     </div>
+</div>
 
-    <style>
-        body {
-            background-color: #f5f5f5; /* Light background */
-        }
+<style>
+    body {
+        background-color: #f8f9fa; /* Softer light background */
+        font-family: 'Arial', sans-serif;
+    }
 
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
-        .list-group-item {
-            background-color: transparent;
-        }
+    .search-bar {
+        display: flex;
+        justify-content: center;
+    }
 
-        .list-group-item:hover {
-            background-color: #f1f1f1;
-            transition: background-color 0.3s ease;
-        }
+    .form-control {
+        border-radius: 30px;
+        padding: 10px 20px;
+    }
 
-        .user-icon {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
+    .btn-primary {
+        border-radius: 30px;
+        padding: 10px 20px;
+    }
 
-        .btn-outline-primary {
-            border-color: #007bff;
-            color: #007bff;
-        }
+    .user-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
+    .list-group-item {
+        background-color: #fafafa;
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .list-group-item:hover {
+        background-color: #f1f1f1;
+        transition: background-color 0.3s ease;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    a.text-dark {
+        text-decoration: none;
+    }
+
+    a.text-dark:hover {
+        text-decoration: underline;
+    }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        border-radius: 30px;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
 {% endblock %}

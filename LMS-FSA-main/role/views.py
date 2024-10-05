@@ -8,7 +8,7 @@ from django.http import HttpResponse
 import openpyxl
 # Create your views here.
 # Role views
-# Role views
+
 def role_list(request):
     roles = Role.objects.all()  # Lấy danh sách các role
     module_groups = ModuleGroup.objects.all()

@@ -9,14 +9,33 @@ from django.shortcuts import render, redirect
 #     # List all users
 #     users = User.objects.all()
 #     return render(request, 'chat/user_list.html', {'users': users})
+# def user_list_view(request):
+#     # Get the current logged-in user
+#     current_user = request.user
+    
+#     # List all users except the logged-in user
+#     users = User.objects.exclude(id=current_user.id)
+    
+#     return render(request, 'chat/user_list.html', {'users': users})
+
 def user_list_view(request):
-    # Get the current logged-in user
-    current_user = request.user
+    current_user = request.user  # Get the current logged-in user
     
-    # List all users except the logged-in user
-    users = User.objects.exclude(id=current_user.id)
+    # Get the search query from the request
+    search_query = request.GET.get('q', '').strip()
     
-    return render(request, 'chat/user_list.html', {'users': users})
+    if search_query:
+        # Filter users based on the search query, excluding the current user
+        users = User.objects.filter(
+            Q(username__icontains=search_query) | 
+            Q(email__icontains=search_query) | 
+            Q(full_name__icontains=search_query)  # Changed to full_name
+        ).exclude(id=current_user.id)
+    else:
+        # If no search query, list all users except the current user
+        users = User.objects.exclude(id=current_user.id)
+    
+    return render(request, 'chat/user_list.html', {'users': users, 'search_query': search_query})
 
 def chat_view(request, username):
     other_user = get_object_or_404(User, username=username)  # The receiver (other participant in the chat)
